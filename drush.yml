@@ -1,0 +1,6 @@
+---
+- hosts: drupal_webservers_staging
+  sudo: yes
+  tasks:
+    - name: install drush globally
+      command: /usr/local/bin/composer global require drush/drush:7.*

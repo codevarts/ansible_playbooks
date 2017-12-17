@@ -1,0 +1,23 @@
+---
+- hosts: drupal_webservers_staging
+  sudo: yes
+  tasks:
+    - name: install php
+      apt: name={{ item }}
+           update_cache=yes
+           state=latest
+      with_items:
+        - php7.0
+        - libapache2-mod-php7.0
+        - php7.0-mcrypt
+        - php7.0-mbstring
+        - php7.0-cli
+        - php7.0-xml
+
+    - name: update dir conf to prefer php files first
+      copy:
+        src: ./dir.conf
+        dest: /etc/apache2/mods-available/dir.conf
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
