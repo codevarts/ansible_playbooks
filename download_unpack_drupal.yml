@@ -1,0 +1,15 @@
+---
+- hosts: drupal_webservers_staging
+  vars:
+    drupal_version: 8.4.3
+  tasks:
+    - name: create temp directory
+      file:
+        path: /tmp/drupal
+        state: directory
+        mode: "u=rwx,g=rwx,o=rw"
+    - name: download and unpack lastest drupal version
+      unarchive:
+        src: https://ftp.drupal.org/files/projects/drupal-{{ drupal_version }}.tar.gz
+        dest: /tmp/drupal
+        remote_src: yes
