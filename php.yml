@@ -13,6 +13,7 @@
         - php7.0-mbstring
         - php7.0-cli
         - php7.0-xml
+        - php7.0-gd
 
     - name: update dir conf to prefer php files first
       copy:
