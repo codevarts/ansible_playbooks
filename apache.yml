@@ -6,3 +6,31 @@
       apt: name=apache2
            update_cache=yes
            state=latest
+
+    - name: enabled mod_rewrite
+      apache2_module: name=rewrite
+                      state=present
+      notify:
+        - restart apache2
+
+    - name: configure virtual hosts file
+      lineinfile: dest=/etc/apache2/sites-available/000-default.conf
+                  regexp='^<VirtualHost \*:80>'
+                  insertafter='^<VirtualHost \*:80>'
+                  line='\n\n\t<Directory /var/www/html>\n\t\tOptions Indexes FollowSymLinks MultiViews\n\t\tAllowOverride All\n\t\tRequire all granted\n\t</Directory>'
+                  state=present
+
+    - name: copy .htaccess file to server
+      copy:
+        src: ./.htaccess
+        dest: /var/www/html/.htaccess
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+
+
+  handlers:
+    - name: restart apache2
+      service: name=apache2
+               state=restarted
+
